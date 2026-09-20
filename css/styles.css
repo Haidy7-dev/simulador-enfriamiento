@@ -16,44 +16,56 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-body {
+/* BLOQUEO DE DESBORDAMIENTO HORIZONTAL GLOBAL */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background-color: var(--bg-color);
   color: var(--text-dark);
-  padding: 12px;
 }
 
-/* ENCABEZADO */
+body {
+  padding: 10px;
+}
+
+/* ENCABEZADO RESPONSIVO */
 .navbar {
   background-color: var(--header-bg);
   color: white;
-  padding: 12px 20px;
+  padding: 12px 16px;
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
+  width: 100%;
+  gap: 10px;
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
 
 .icon-temp {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   background: rgba(255, 255, 255, 0.15);
   padding: 6px;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .brand h1 {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 700;
+  line-height: 1.2;
 }
 
 .brand p {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #94a3b8;
 }
 
@@ -61,40 +73,47 @@ body {
   background-color: var(--primary-blue);
   color: white;
   border: none;
-  padding: 10px 18px;
+  padding: 8px 14px;
   border-radius: 6px;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
   touch-action: manipulation;
 }
 
 /* GRID PRINCIPAL */
 .main-container {
   display: grid;
-  grid-template-columns: 310px 1fr;
+  grid-template-columns: 320px 1fr;
   gap: 15px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .sidebar, .card {
   background: var(--card-bg);
   border-radius: 10px;
-  padding: 18px;
+  padding: 16px;
   border: 1px solid var(--border-color);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .sidebar h2, .results-card h2 {
   color: #1e3a8a;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   margin-bottom: 12px;
 }
 
-/* SLIDERS TÁCTILES Y ENTRADAS TECLADO */
+/* SLIDERS Y CONTROLES DE ENTRADA */
 .control-card {
   background: #f8fafc;
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 12px;
+  width: 100%;
 }
 
 .control-card label {
@@ -110,10 +129,12 @@ body {
   gap: 8px;
   font-size: 0.75rem;
   color: var(--text-muted);
+  width: 100%;
 }
 
 .slider-group input[type="range"] {
   flex: 1;
+  min-width: 0;
   height: 8px;
   touch-action: manipulation;
   cursor: pointer;
@@ -128,20 +149,23 @@ body {
   font-weight: 700;
   font-size: 0.85rem;
   color: var(--text-dark);
+  flex-shrink: 0;
 }
 
 .unit {
   width: 32px;
   font-size: 0.75rem;
+  flex-shrink: 0;
 }
 
 .content-area {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  min-width: 0;
 }
 
-/* TARJETA MODELO MATEMÁTICO */
+/* MODELO MATEMÁTICO */
 .model-card {
   display: grid;
   grid-template-columns: 1fr 1fr 1.2fr;
@@ -162,12 +186,14 @@ body {
 .formula {
   font-family: Georgia, serif;
   font-style: italic;
-  font-size: 1rem;
+  font-size: 0.95rem;
   margin-bottom: 4px;
+  word-break: break-word;
 }
 
 .highlight {
-  color: var(--text-dark);
+  color: var(--primary-blue);
+  font-weight: bold;
 }
 
 .legend-col ul {
@@ -178,16 +204,23 @@ body {
 }
 
 /* GRÁFICA Y TABLA */
+.chart-section, .table-section {
+  width: 100%;
+  min-width: 0;
+}
+
 .chart-container {
-  height: 220px;
+  height: 230px;
   position: relative;
   width: 100%;
 }
 
 .table-wrapper {
-  max-height: 260px;
+  width: 100%;
+  max-width: 100%;
+  max-height: 280px;
   overflow-y: auto;
-  overflow-x: auto;
+  overflow-x: auto; /* Permite scroll horizontal ÚNICAMENTE dentro del recuadro de la tabla */
   border: 1px solid var(--border-color);
   border-radius: 6px;
   -webkit-overflow-scrolling: touch;
@@ -198,7 +231,7 @@ table {
   border-collapse: collapse;
   font-size: 0.8rem;
   text-align: center;
-  min-width: 550px;
+  min-width: 520px;
 }
 
 thead {
@@ -214,7 +247,6 @@ th {
   font-weight: 700;
 }
 
-/* VALORES NUMÉRICOS EN NEGRO */
 td {
   padding: 8px;
   border-bottom: 1px solid #f1f5f9;
@@ -222,7 +254,7 @@ td {
   font-weight: 500;
 }
 
-/* MEDIA QUERIES (MÓVILES) */
+/* --- REGLAS DE ADAPTACIÓN PARA MÓVILES --- */
 @media (max-width: 900px) {
   .main-container {
     grid-template-columns: 1fr;
@@ -237,5 +269,62 @@ td {
     border-top: 1px solid var(--border-color);
     padding-left: 0;
     padding-top: 12px;
+  }
+}
+
+@media (max-width: 580px) {
+  body {
+    padding: 6px;
+  }
+
+  .navbar {
+    padding: 10px;
+  }
+
+  .brand h1 {
+    font-size: 0.85rem;
+  }
+
+  .brand p {
+    font-size: 0.65rem;
+  }
+
+  .btn-reset {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+
+  /* Reorganización dinámica de controles en móviles */
+  .slider-group {
+    flex-wrap: wrap;
+    gap: 6px 8px;
+  }
+
+  /* La barra deslizante pasa arriba a 100% de ancho */
+  .slider-group input[type="range"] {
+    order: 1;
+    flex: 1 1 100%;
+    width: 100%;
+    margin-bottom: 2px;
+  }
+
+  /* Los valores mínimo y máximo quedan abajo a la izquierda */
+  .slider-group span:nth-of-type(1) {
+    order: 2;
+  }
+
+  .slider-group span:nth-of-type(2) {
+    order: 3;
+    margin-right: auto;
+  }
+
+  /* La casilla y unidad quedan alineadas a la derecha abajo */
+  .slider-group input[type="number"] {
+    order: 4;
+  }
+
+  .slider-group .unit {
+    order: 5;
+    width: auto;
   }
 }
