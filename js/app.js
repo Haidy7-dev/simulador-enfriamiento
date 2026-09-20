@@ -62,14 +62,65 @@ function initChart() {
   });
 }
 
-// Sincronizar Sliders y Cajas Numéricas
+// Sincronizar Sliders y Cajas Numéricas restringiendo estrictamente MIN y MAX
 function bindInputPair(slider, input) {
+  // 1. Al mover la barra deslizante
   slider.addEventListener('input', () => {
     input.value = slider.value;
     updateSimulation();
   });
+
+  // 2. Al perder el foco (blur) o presionar Enter (change): corrige el valor final
+  const clampValue = () => {
+    const min = parseFloat(input.min);
+    const max = parseFloat(input.max);
+    let val = parseFloat(input.value);
+
+    if (isNaN(val)) {
+      val = min;
+    } else if (val < min) {
+      val = min;
+    } else if (val > max) {
+      val = max;
+    }
+
+    input.value = val;
+    slider.value = val;
+    updateSimulation();
+  };
+
+  input.addEventListener('change', clampValue);
+  input.addEventListener('blur', clampValue);
+
+  // 3. Mientras se escribe en la casilla: bloquea al instante mayores al MAX y menores al MIN
   input.addEventListener('input', () => {
-    slider.value = input.value;
+    const min = parseFloat(input.min);
+    const max = parseFloat(input.max);
+    let val = parseFloat(input.value);
+
+    if (!isNaN(val)) {
+      // Bloquea si supera el máximo
+      if (val > max) {
+        input.value = max;
+        slider.value = max;
+      } 
+      // Bloquea si es inferior al mínimo (negativos en positivos o bajo el limite permitido)
+      else if (val < min) {
+        if (val < 0 && min >= 0) {
+          input.value = min;
+          slider.value = min;
+        } else if (val < 0 && min < 0 && val < min) {
+          input.value = min;
+          slider.value = min;
+        } else {
+          slider.value = min;
+        }
+      } 
+      // Valor válido
+      else {
+        slider.value = val;
+      }
+    }
     updateSimulation();
   });
 }
