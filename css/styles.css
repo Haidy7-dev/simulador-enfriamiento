@@ -192,8 +192,7 @@ body {
 }
 
 .highlight {
-  color: var(--primary-blue);
-  font-weight: bold;
+  color: var(--text-dark);
 }
 
 .legend-col ul {
