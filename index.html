@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador - Ley de Enfriamiento de Newton</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- ENCABEZADO -->
+  <header class="navbar">
+    <div class="brand">
+      <div class="icon-temp">🌡️</div>
+      <div>
+        <h1>Ley de Enfriamiento de Newton</h1>
+        <p>Modelo matemático interactivo</p>
+      </div>
+    </div>
+    <button id="btnReset" class="btn-reset" type="button">↺ Reiniciar</button>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="main-container">
+
+    <!-- SIDEBAR DE ENTRADAS -->
+    <aside class="sidebar">
+      <h2>Entradas del experimento</h2>
+
+      <!-- T0 -->
+      <div class="control-card">
+        <label for="inputT0">Temperatura inicial (T₀)</label>
+        <div class="slider-group">
+          <span>-50</span>
+          <input type="range" id="sliderT0" min="-50" max="200" value="80">
+          <span>200</span>
+          <input type="number" id="inputT0" value="80" inputmode="decimal">
+          <span class="unit">°C</span>
+        </div>
+      </div>
+
+      <!-- Tm -->
+      <div class="control-card">
+        <label for="inputTm">Temperatura ambiente (Tₘ)</label>
+        <div class="slider-group">
+          <span>-50</span>
+          <input type="range" id="sliderTm" min="-50" max="200" value="30">
+          <span>200</span>
+          <input type="number" id="inputTm" value="30" inputmode="decimal">
+          <span class="unit">°C</span>
+        </div>
+      </div>
+
+      <!-- k -->
+      <div class="control-card">
+        <label for="inputK">Constante de proporcionalidad (k)</label>
+        <div class="slider-group">
+          <span>0.001</span>
+          <input type="range" id="sliderK" min="0.001" max="0.2" step="0.001" value="0.032">
+          <span>0.2</span>
+          <input type="number" id="inputK" step="0.001" value="0.032" inputmode="decimal">
+          <span class="unit">1/min</span>
+        </div>
+      </div>
+
+      <!-- dt -->
+      <div class="control-card">
+        <label for="inputDt">Intervalo de tiempo (Δt)</label>
+        <div class="slider-group">
+          <span>0.1</span>
+          <input type="range" id="sliderDt" min="0.1" max="60" step="0.1" value="3">
+          <span>60</span>
+          <input type="number" id="inputDt" step="0.1" value="3" inputmode="decimal">
+          <span class="unit">min</span>
+        </div>
+      </div>
+
+      <!-- n -->
+      <div class="control-card">
+        <label for="inputN">Cantidad de datos (n)</label>
+        <div class="slider-group">
+          <span>1</span>
+          <input type="range" id="sliderN" min="1" max="200" value="21">
+          <span>200</span>
+          <input type="number" id="inputN" value="21" inputmode="numeric">
+          <span class="unit">puntos</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ÁREA DE RESULTADOS -->
+    <section class="content-area">
+
+      <!-- MODELO MATEMÁTICO CON LEYENDA -->
+      <div class="card model-card">
+        <div class="model-col">
+          <h3>Ecuación diferencial</h3>
+          <p class="formula">dT/dt = -k(T - Tₘ)</p>
+          <p class="formula">T(t) = Tₘ + (T₀ - Tₘ)e<sup>-kt</sup></p>
+        </div>
+        <div class="model-col divider">
+          <h3>Sustitución en tiempo real</h3>
+          <p id="mathSub1" class="formula">T(t) = 30 + (80 - 30)e<sup>-0.032t</sup></p>
+          <p id="mathSub2" class="formula highlight">T(t) = 30 + 50e<sup>-0.032t</sup></p>
+        </div>
+        <div class="model-col divider legend-col">
+          <ul>
+            <li><strong>T(t)</strong> : Temperatura en el tiempo t (°C)</li>
+            <li><strong>T₀</strong> : Temperatura inicial (°C)</li>
+            <li><strong>Tₘ</strong> : Temperatura ambiental (°C)</li>
+            <li><strong>k</strong> : Constante de proporcionalidad (1/min)</li>
+            <li><strong>t</strong> : Tiempo (min)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- RESULTADOS GRÁFICA Y TABLA -->
+      <div class="card results-card">
+        <h2>Resultados del experimento</h2>
+
+        <div class="chart-section">
+          <h3>Gráfica Temperatura vs Tiempo</h3>
+          <div class="chart-container">
+            <canvas id="coolingChart"></canvas>
+          </div>
+        </div>
+
+        <div class="table-section">
+          <h3>Tabla de datos experimentales</h3>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Datos</th>
+                  <th>Tiempo t (min)</th>
+                  <th>Temperatura T (°C)</th>
+                  <th>ΔT / Δt</th>
+                  <th>T(tᵢ) - Tₘ</th>
+                  <th>(ΔT/Δt) / (T(tᵢ) - Tₘ)</th>
+                </tr>
+              </thead>
+              <tbody id="dataTableBody">
+                <!-- Se llena dinámicamente con JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
